@@ -13,7 +13,7 @@ import React, {useEffect, useState} from 'react';
 import Button from '../components/Button';
 import Geolocation from 'react-native-geolocation-service';
 import {connect} from 'react-redux';
-const WelcomePage = ({lat, lon, setLat, setLon}) => {
+const WelcomePage = ({setLat, setLon}) => {
   const [isGranted, setIsGranted] = useState(false);
   const requestLocationPermission = async () => {
     try {

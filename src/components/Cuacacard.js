@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import React, {useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {getImage} from '../utilities/dataGambar';
+
 const Cuacacard = ({
   district,
   city,
@@ -13,11 +14,6 @@ const Cuacacard = ({
   date,
   weather,
 }) => {
-  useEffect(() => {
-    console.log(weather);
-    // console.log(getImage(weather));
-  }, [weather]);
-
   return (
     <View>
       <LinearGradient
@@ -120,16 +116,29 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cuacaCardBawah: {
-    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    // flex: 1,
+    borderRadius: 30,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    width: '100%',
+    width: '90%',
+    marginBottom: 20,
+    marginTop: 30,
+    paddingBottom: 20,
+    paddingTop: 10,
   },
   suhu: {alignItems: 'center', marginTop: 20},
   image: {
-    height: 150,
-    width: 200,
+    height: 120,
+    width: 170,
     resizeMode: 'contain',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });

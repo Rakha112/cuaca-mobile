@@ -5,20 +5,31 @@ import {
   SafeAreaView,
   Platform,
   StatusBar,
-  PermissionsAndroid,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Cuacacard from '../components/Cuacacard';
-import CuacaCardDaily from '../components/CuacaCardDaily';
+import CuacaCardHourly from '../components/CuacaCardHourly';
 import Chart from '../components/Chart';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {HERE_API_KEY, OW_API_KEY2} from '@env';
+import {HERE_API_KEY, OW_API_KEY} from '@env';
 import moment from 'moment/min/moment-with-locales.js';
-// import Carousel from 'react-native-snap-carousel';
+import Arrow from '../assets/svg/right-arrow-svgrepo-com.svg';
+import {useNavigation} from '@react-navigation/native';
 
-const HomePage = ({lat, lon}) => {
+const HomePage = ({lat, lon, setDaily}) => {
+  const navigation = useNavigation();
+  const tanggalan = new Date();
+  const sekarang = tanggalan.getDate();
+  var besok = tanggalan;
+  besok.setDate(besok.getDate() + 1);
+
+  const getBesok = date => {
+    var dd = (date.getDate() < 10 ? '' : '') + date.getDate();
+    return dd;
+  };
   const [address, setAddress] = useState({
     district: '',
     city: '',
@@ -54,7 +65,7 @@ const HomePage = ({lat, lon}) => {
         .catch(err => console.log(err));
       axios
         .get(
-          `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${OW_API_KEY2}&units=metric`,
+          `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${OW_API_KEY}&units=metric`,
         )
         .then(res => {
           setCurrentWeather({
@@ -74,25 +85,14 @@ const HomePage = ({lat, lon}) => {
             temp: res.data.hourly.map(a => a.temp),
             weather: res.data.hourly.map(a => a.weather[0].main),
           });
-
-          // const aaa = res.data.hourly.map(a => a.dt <= 1651251600);
-          // const bbb = res.data.hourly.map(a => a.dt);
-          // const ddd = [];
-          // const ccc = bbb.forEach(element => {
-          //   if (element <= 1651251600) {
-          //     ddd.push(moment.unix(element).locale('id').format('HH:mm'));
-          //   }
-          // });
+          setDaily(res.data.daily);
         })
         .catch(err => console.log(err));
     }
-  }, [lat, lon]);
+  }, [lat, lon, setDaily]);
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.cuacaCard}>
-        <Text>HALOO</Text>
-      </View> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Cuacacard
           district={address.district}
@@ -108,14 +108,30 @@ const HomePage = ({lat, lon}) => {
         <View style={styles.cuacaCardDaily}>
           <View style={styles.daily}>
             <Text style={styles.textDaily}>Hari Ini</Text>
-            <Text style={styles.textDaily}>Lihat 7 Hari</Text>
+            <TouchableOpacity
+              style={styles.touchable}
+              onPress={() => {
+                navigation.push('Week');
+              }}>
+              <Text style={styles.textDaily}>Lihat 7 Hari</Text>
+              <Arrow
+                width={20}
+                height={30}
+                style={styles.arrow}
+                fill={'#0161eb'}
+              />
+            </TouchableOpacity>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {hourly.jam.map((element, key) => {
-              if (element <= 1651251600) {
+              const tgl = moment.unix(element).locale('id').format('D');
+              if (
+                tgl.toString() === sekarang.toString() ||
+                tgl.toString() === getBesok(besok)
+              ) {
                 return (
-                  <CuacaCardDaily
-                    hourly={moment.unix(element).locale('id').format('HH:mm')}
+                  <CuacaCardHourly
+                    hourly={element}
                     temp={hourly.temp[key]}
                     weather={hourly.weather[key]}
                     key={key}
@@ -123,13 +139,6 @@ const HomePage = ({lat, lon}) => {
                 );
               }
             })}
-
-            {/* <CuacaCardDaily />
-            <CuacaCardDaily />
-            <CuacaCardDaily />
-            <CuacaCardDaily />
-            <CuacaCardDaily />
-            <CuacaCardDaily /> */}
           </ScrollView>
           {/* <Chart /> */}
         </View>
@@ -145,8 +154,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setLat: data => dispatch({type: 'LAT', payload: data}),
-    setLon: data => dispatch({type: 'LON', payload: data}),
+    setDaily: data => dispatch({type: 'DAILY', payload: data}),
   };
 };
 
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   cuacaCardDaily: {
-    marginTop: 50,
+    marginTop: 30,
   },
   textDaily: {
     marginLeft: 20,
@@ -172,5 +180,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginRight: 20,
+  },
+  arrow: {
+    marginLeft: 5,
+    marginBottom: 20,
+  },
+  touchable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
