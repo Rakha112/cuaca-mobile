@@ -10,7 +10,7 @@ const CuacaCardDaily = ({date, weather, min, max, eve}) => {
       start={{x: 1, y: 0}}
       end={{x: 0, y: 0}}
       colors={['#0161eb', '#0086f0', '#00b5e5']}>
-      <View style={{alignItems: 'center'}}>
+      <View style={styles.suhuContainer}>
         <Text style={styles.textTanggal}>{date}</Text>
         <Image source={getImage(weather)} style={styles.image} />
         <View style={styles.suhu}>
@@ -20,15 +20,15 @@ const CuacaCardDaily = ({date, weather, min, max, eve}) => {
             blurAmount={5}
             reducedTransparencyFallbackColor="white"
           /> */}
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={styles.suhuContainer}>
             <Text style={styles.textSuhu}>Min</Text>
             <Text style={styles.textTanggal}>{min}&deg;C</Text>
           </View>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={styles.suhuContainer}>
             <Text style={styles.textSuhu}>Rerata</Text>
             <Text style={styles.textTanggal}>{eve}&deg;C</Text>
           </View>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={styles.suhuContainer}>
             <Text style={styles.textSuhu}>Max</Text>
             <Text style={styles.textTanggal}>{max}&deg;C</Text>
           </View>
@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     color: '#b0d0de',
   },
   textSuhu: {
-    marginTop: 10,
     fontFamily: 'Rubik-Light',
     fontSize: 20,
     color: '#b0d0de',
@@ -85,5 +84,9 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
+  },
+  suhuContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

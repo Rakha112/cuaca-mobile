@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {getImage} from '../utilities/dataGambar';
 
@@ -13,6 +13,7 @@ const Cuacacard = ({
   humid,
   date,
   weather,
+  mrgnTop,
 }) => {
   return (
     <View>
@@ -20,7 +21,7 @@ const Cuacacard = ({
         start={{x: 1, y: 0}}
         end={{x: 0, y: 0}}
         colors={['#0161eb', '#0086f0', '#00b5e5']}
-        style={styles.cuacaCard}>
+        style={[styles.cuacaCard, {marginTop: mrgnTop}]}>
         <Text style={styles.text}>{district ? district : city}</Text>
         <Text style={styles.textTanggal}>{date}</Text>
         <View style={styles.cuacaCardAtas}>
@@ -96,9 +97,9 @@ const styles = StyleSheet.create({
   },
   cuacaCard: {
     backgroundColor: '#0161eb',
+    // marginTop: 60,
     marginRight: 20,
     marginLeft: 20,
-    marginTop: 50,
     height: 480,
     borderRadius: 30,
     alignItems: 'center',

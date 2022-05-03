@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import {StyleSheet, Text, Image} from 'react-native';
+import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {getImage} from '../utilities/dataGambar';
 import moment from 'moment/min/moment-with-locales.js';

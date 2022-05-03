@@ -11,13 +11,13 @@ import {
 import React, {useEffect, useState} from 'react';
 import Cuacacard from '../components/Cuacacard';
 import CuacaCardHourly from '../components/CuacaCardHourly';
-import Chart from '../components/Chart';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {HERE_API_KEY, OW_API_KEY} from '@env';
 import moment from 'moment/min/moment-with-locales.js';
 import Arrow from '../assets/svg/right-arrow-svgrepo-com.svg';
 import {useNavigation} from '@react-navigation/native';
+import Search from '../components/Search';
 
 const HomePage = ({lat, lon, setDaily}) => {
   const navigation = useNavigation();
@@ -94,6 +94,7 @@ const HomePage = ({lat, lon, setDaily}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <Search />
         <Cuacacard
           district={address.district}
           city={address.city}
@@ -104,6 +105,7 @@ const HomePage = ({lat, lon, setDaily}) => {
           humid={currentWeather.humid}
           date={currentWeather.date}
           weather={currentWeather.weather}
+          mrgnTop={60}
         />
         <View style={styles.cuacaCardDaily}>
           <View style={styles.daily}>
@@ -167,11 +169,11 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   cuacaCardDaily: {
-    marginTop: 30,
+    marginTop: 20,
   },
   textDaily: {
     marginLeft: 20,
-    marginBottom: 20,
+    marginBottom: 10,
     fontFamily: 'Rubik-Regular',
     fontSize: 20,
     color: '#0161eb',
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
   },
   arrow: {
     marginLeft: 5,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   touchable: {
     flexDirection: 'row',

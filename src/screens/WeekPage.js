@@ -1,24 +1,18 @@
 import {
   StyleSheet,
-  Text,
-  View,
   ScrollView,
   SafeAreaView,
   Platform,
   StatusBar,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import CuacaCardDaily from '../components/CuacaCardDaily';
 import Arrow from '../assets/svg/right-arrow-svgrepo-com.svg';
 import {useNavigation} from '@react-navigation/native';
 import {connect} from 'react-redux';
 import moment from 'moment/min/moment-with-locales.js';
 const WeekPage = ({daily}) => {
-  // useEffect(() => {
-  //   console.log(daily);
-  // }, [daily]);
-
   const navigation = useNavigation();
   const sekarang = new Date();
   return (
@@ -29,7 +23,7 @@ const WeekPage = ({daily}) => {
         }}>
         <Arrow width={20} height={30} style={styles.arrow} fill={'#0161eb'} />
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView showsHorizontalScrollIndicator={false}>
         {daily.map((el, key) => {
           if (
             moment.unix(el.dt).locale('id').format('D').toString() !==
