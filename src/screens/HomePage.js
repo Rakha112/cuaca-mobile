@@ -50,8 +50,6 @@ const HomePage = ({lat, lon, setDaily}) => {
   });
   useEffect(() => {
     if (lat !== 0 && lon !== 0) {
-      console.log(lat);
-      console.log(lon);
       axios
         .get(
           `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lon}&lang=en-US&apiKey=${HERE_API_KEY}`,
@@ -105,7 +103,7 @@ const HomePage = ({lat, lon, setDaily}) => {
           humid={currentWeather.humid}
           date={currentWeather.date}
           weather={currentWeather.weather}
-          mrgnTop={60}
+          mrgnTop={80}
         />
         <View style={styles.cuacaCardDaily}>
           <View style={styles.daily}>

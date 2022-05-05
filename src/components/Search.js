@@ -1,15 +1,28 @@
-import {StyleSheet, View, TextInput} from 'react-native';
+import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {OW_API_KEY} from '@env';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import SearchIcon from '../assets/svg/search-svgrepo-com.svg';
 const Search = ({setCariKota, setDataCariKota}) => {
   const navigation = useNavigation();
   const [isFocus, setIsFocus] = useState(false);
   const [kota, setKota] = useState('');
-  const submitHandle = kota1 => {
+  const submitHandle = () => {
+    if (kota !== '') {
+      getData(kota);
+      setCariKota(kota);
+    } else {
+      Toast.show({
+        type: 'kotaNotFound',
+        text1: 'Isikan nama kota terlebih dahulu...',
+        visibilityTime: 2000,
+      });
+    }
+  };
+  const getData = kota1 => {
     axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?q=${kota1},ID&appid=${OW_API_KEY}&units=metric`,
@@ -23,13 +36,16 @@ const Search = ({setCariKota, setDataCariKota}) => {
           Toast.show({
             type: 'kotaNotFound',
             text1: 'Kota Tidak Ditemukan',
-            visibilityTime: 1500,
+            visibilityTime: 2000,
           });
         }
       });
   };
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.icon} onPress={() => submitHandle()}>
+        <SearchIcon width={20} height={20} fill={'#0161eb'} />
+      </TouchableOpacity>
       <TextInput
         style={isFocus ? styles.inputFocus : styles.input}
         placeholder={'Cari kota...'}
@@ -37,8 +53,7 @@ const Search = ({setCariKota, setDataCariKota}) => {
         onFocus={() => setIsFocus(true)}
         onChangeText={e => setKota(e)}
         onSubmitEditing={() => {
-          submitHandle(kota);
-          setCariKota(kota);
+          submitHandle();
         }}
       />
     </View>
@@ -56,23 +71,29 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'absolute',
   },
   input: {
     backgroundColor: '#eaf0f5',
     width: '100%',
     borderRadius: 50,
-    // margin: 10,
-    position: 'absolute',
-    paddingLeft: 20,
+    paddingLeft: 40,
+    borderColor: '#eaf0f5',
+    borderWidth: 1,
   },
   inputFocus: {
-    position: 'absolute',
     backgroundColor: '#eaf0f5',
     width: '100%',
     borderRadius: 50,
-    // margin: 10,
-    paddingLeft: 20,
+    paddingLeft: 40,
     borderColor: '#0161eb',
     borderWidth: 1,
+  },
+  icon: {
+    position: 'absolute',
+    zIndex: 9,
+    margin: 15,
   },
 });

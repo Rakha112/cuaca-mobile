@@ -45,7 +45,7 @@ const Kotapage = ({cariKota, dataCariKota}) => {
         });
       })
       .catch(err => console.log(err));
-  }, [dataCariKota.coord.lat, dataCariKota.coord.lon, dataCariKota.lat]);
+  }, [dataCariKota.coord.lat, dataCariKota.coord.lon]);
 
   return (
     <View style={styles.container}>

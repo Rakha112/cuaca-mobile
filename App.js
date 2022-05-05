@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Text, StyleSheet, StatusBar} from 'react-native';
 import WelcomePage from './src/screens/WelcomePage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
@@ -10,7 +10,15 @@ import WeekPage from './src/screens/WeekPage';
 import Toast from 'react-native-toast-message';
 import TandaSeru from './src/assets/svg/exclamation-lg-svgrepo-com.svg';
 import Kotapage from './src/screens/Kotapage';
+import SplashScreen from 'react-native-splash-screen';
+
+// Do stuff and hide the splash when you want
+
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   const Stack = createStackNavigator();
   const initialState = {
     lat: 0,
@@ -66,6 +74,11 @@ const App = () => {
 
   return (
     <Provider store={store}>
+      <StatusBar
+        backgroundColor="transparent"
+        translucent={true}
+        barStyle="dark-content"
+      />
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Welcome"

@@ -23,7 +23,7 @@ const WeekPage = ({daily}) => {
         }}>
         <Arrow width={20} height={30} style={styles.arrow} fill={'#0161eb'} />
       </TouchableOpacity>
-      <ScrollView showsHorizontalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {daily.map((el, key) => {
           if (
             moment.unix(el.dt).locale('id').format('D').toString() !==
